@@ -24,6 +24,7 @@
         'reports/imex_inventory_report_views.xml',
         'wizard/imex_inventory_report_wizard_view.xml',
     ],
+    'images':['img/report1.png'],
     "assets": {
     },
     "installable": True,
