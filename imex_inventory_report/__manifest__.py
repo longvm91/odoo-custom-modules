@@ -10,7 +10,7 @@
     """,
     "license": "LGPL-3",
     'author': "Jason Vu",
-    'website': "",
+    'website': "https://github.com/longvm91/odoo-custom-modules/tree/16.0/imex_inventory_report",
 
     'category': 'Warehouse',
     'version': '16.0.1.1.0',
