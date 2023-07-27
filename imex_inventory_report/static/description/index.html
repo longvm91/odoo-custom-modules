@@ -10,24 +10,36 @@
     <div id = "imex-inventory-report">
         <h1>Imex Inventory Report</h1>
         <p>Inventory Report with total initial, qty in, qty out, balance.</p>
-        <p><li>Filter wizard:<br/>
+        <p><li><strong>Filter wizard:</strong><br/>
             - If leave location blank mean select all internal locations<br/>
             - If leave category blank mean select all categories<br/>
             - If leave product blank mean select all category's products (if category set) or select all storable products (if category not set)<br/>
             - If start date blank mean period start from 1900-01-01<br/>
             - If end date blank mean period end date is today<br/>
-            - Set 'Group location' mean quantity in,out at each specific location and count internal transfer quantity<br/>
-            - Not set 'Group location' mean quantity in,out for all warehouse and not count internal transfer quantity<br/></li>
+            </li>
         <img src="https://raw.githubusercontent.com/longvm91/odoo-custom-modules/16.0/imex_inventory_report/static/img/wizard1.png" alt="filter wizard"/>
         <img src="https://raw.githubusercontent.com/longvm91/odoo-custom-modules/16.0/imex_inventory_report/static/img/wizard2.png" alt="filter wizard"/>
         </p>
-        <p><li>View report:</li>
+        <p><li><strong>View report:</strong></li>
         <img src="https://raw.githubusercontent.com/longvm91/odoo-custom-modules/16.0/imex_inventory_report/static/img/report0.png" alt="report all products"/></p>
-        <p><li>Print report:</li>
+        <p><li><strong>Print report:</strong></li>
         <img src="https://raw.githubusercontent.com/longvm91/odoo-custom-modules/16.0/imex_inventory_report/static/img/report1.png" alt="print report pdf"/></p>
-        <p><li>Group by location example counted internal transfers:</li>
+        <p><strong>group_location cases</strong><br/>
+            case 1: location set<br/>
+                &emsp;=> count internal transfer and group by location<br/>
+                &emsp;1.1: group_location = True<br/>
+                &emsp;&emsp;=> select all child_of location<br/>
+                &emsp;1.2: group_location = False<br/>
+                &emsp;&emsp;=> select only location_id<br/>
+             case 2: location not set<br/>
+                &emsp;=> select all internal locations<br/>
+                &emsp;2.1: group_location = True<br/>
+                &emsp;&emsp;=> count internal transfer and group by location<br/>
+                &emsp;2.2: group_location = False<br/>
+                &emsp;&emsp;=> not count internal transfer and neither group by location</p>
+        <p><li><strong>Group by location example</strong> counted internal transfers:</li>
         <img src="https://raw.githubusercontent.com/longvm91/odoo-custom-modules/16.0/imex_inventory_report/static/img/group%20location1.png" alt="group by location example"/></p>
-        <p><li>Not group by location example din't count internal transfers:</li>
+        <p><li><strong>Not group by location example</strong> din't count internal transfers:</li>
         <img src="https://raw.githubusercontent.com/longvm91/odoo-custom-modules/16.0/imex_inventory_report/static/img/group%20location2.png" alt="not group by location example"/></p>
         <p>If you have questions, don't hesitate, leave comment or feel free to contact me <a href="mailto:longvm91@gmail.com">Jason</a></p>
     </div>

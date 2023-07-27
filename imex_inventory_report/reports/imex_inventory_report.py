@@ -21,18 +21,35 @@ class ImexInventoryReport(models.Model):
     balance = fields.Float(readonly=True)
     amount = fields.Float(readonly=True)
 
-    # if leave location blank then select all internal locations
-    # else select all child of location
-    def _get_locations(self, location_id):
+    # TODO: need a field to help these cases more clearly
+    # case 1: location set
+    #       => count internal transfer and group by location
+    #    1.1: group_location = True
+    #       => select all child_of location
+    #    1.2: group_location = False
+    #       => select only location_id
+    # case 2: location not set
+    #       => select all internal locations
+    #    2.1: group_location = True
+    #       => count internal transfer and group by location
+    #    2.2: group_location = False
+    #       => not count internal transfer and neither group by location
+    def _get_locations(self, location_id, is_groupby_location):
+        count_internal_transfer = True
         if (location_id):
-            locations = tuple(self.env["stock.location"].search(
-                [("id", "child_of", location_id.ids)]).ids)
+            if is_groupby_location:
+                locations = tuple(self.env["stock.location"].search(
+                    [("id", "child_of", location_id.ids)]).ids)
+            else:
+                locations = tuple(location_id.ids)
         else:
             locations = tuple(self.env["stock.location"].search(
                 [("usage", "=", "internal")]).ids)
             if not locations:
                 locations = (-1,)
-        return locations
+            if not is_groupby_location:
+                count_internal_transfer = False
+        return locations, count_internal_transfer
 
     # if leave category blank then select all categories
     # else select all child of category
@@ -79,7 +96,8 @@ class ImexInventoryReport(models.Model):
         date_to = filter_fields.date_to or fields.Date.context_today(self)
         is_groupby_location = filter_fields.is_groupby_location
 
-        locations = self._get_locations(filter_fields.location_id)
+        locations, count_internal_transfer = self._get_locations(
+            filter_fields.location_id, is_groupby_location)
         product_category_ids = self._get_product_category_ids(
             filter_fields.product_category_ids)
         product_ids = self._get_product_ids(
@@ -87,7 +105,7 @@ class ImexInventoryReport(models.Model):
         internal_picking_type = self._get_internal_picking_type(
             is_groupby_location)
 
-        if is_groupby_location:
+        if count_internal_transfer:
             query_ = """
                 SELECT *, (a.initial + a.product_in - a.product_out) as balance,
                     (a.initial_amount + a.product_in_amount - a.product_out_amount) as amount

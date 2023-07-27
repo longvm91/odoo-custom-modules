@@ -11,18 +11,13 @@ class ImexInventoryReportWizard(models.TransientModel):
     date_from = fields.Date(string="Start Date")
     date_to = fields.Date(string="End Date")
     location_id = fields.Many2one(
-        comodel_name="stock.location", string="Locations")
+        comodel_name="stock.location", string="Location")
     product_ids = fields.Many2many(
         comodel_name="product.product", string="Products")
     product_category_ids = fields.Many2many(
         comodel_name="product.category", string="Product Categories")
     is_groupby_location = fields.Boolean(string="Group Locations", default=True,
                                          help="If checked qty will groupby location mean count internal transfer qty else will not count internal transfer qty")
-
-    @api.onchange('location_id')
-    def _onchange_location(self):
-        if self.location_id:
-            self.is_groupby_location = True
 
     def _prepare_imex_inventory_report(self):
         return {

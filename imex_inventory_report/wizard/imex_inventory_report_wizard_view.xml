@@ -9,7 +9,7 @@
                     <group>
                         <field name="date_from"/>
                         <field name="date_to"/>
-                        <field name="is_groupby_location" attrs="{'invisible': [('location_id', '!=', False)]}"/>
+                        <field name="is_groupby_location"/>
                     </group>
                     <group>
                         <field name="product_ids" widget="many2many_tags" domain="[('active', '=', True), ('detailed_type', '=', 'product')]"/>
