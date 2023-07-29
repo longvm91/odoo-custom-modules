@@ -25,7 +25,7 @@
         'reports/imex_inventory_details_report_views.xml',
         'wizard/imex_inventory_report_wizard_view.xml',
     ],
-    'images': ['static/img/report1.png'],
+    'images': ['static/img/report1.png', 'static/img/report2.png'],
     "assets": {
         "web.assets_backend": [
             "imex_inventory_report/static/src/css/**/*",
