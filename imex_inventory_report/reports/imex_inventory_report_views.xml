@@ -38,6 +38,7 @@
                 <field name="product_out_amount" string="Total Amount Out" optional="show"/>
                 <field name="balance" string="Balance" optional="show"/>
                 <field name="amount" string="Amount" optional="show"/>
+                <button name="report_details" type="object" class="fa fa-search"/>
             </tree>
         </field>
     </record>

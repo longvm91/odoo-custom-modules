@@ -1,5 +1,6 @@
 
 from odoo import api, fields, models, tools
+from odoo.tools.safe_eval import safe_eval
 
 
 class ImexInventoryReport(models.Model):
@@ -332,3 +333,30 @@ class ImexInventoryReport(models.Model):
         res = self._cr.execute(
             """CREATE VIEW {} as ({})""".format(self._table, query_), params)
         return res
+
+    def report_details(self):
+        vals = {}
+        filters = self._context.get("filters")
+        filters["product_ids"] = [(6, 0, self.product_id.ids)]
+        report = self.env["imex.inventory.report.wizard"].create(
+            self._context.get("filters"))
+        init = self.env["imex.inventory.details.report"].init_results(report)
+        details = self.env["imex.inventory.details.report"].search([])
+        action = self.env.ref(
+            'imex_inventory_report.action_imex_inventory_details_report')
+        vals = action.sudo().read()[0]
+        context = vals.get("context", {})
+        if context:
+            context = safe_eval(context)
+        context["active_ids"] = details.ids
+        data = {
+            'product_default_code': report.product_ids.default_code,
+            'product_name': report.product_ids.name,
+            'date_from': report.date_from or None,
+            'date_to': report.date_to or fields.Date.context_today(self),
+            'location': report.location_id.complete_name or None,
+            'category': report.product_ids.categ_id.complete_name or None,
+        }
+        context["data"] = data
+        vals["context"] = context
+        return vals
